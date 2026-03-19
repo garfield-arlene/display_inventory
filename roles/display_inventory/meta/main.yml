@@ -1,0 +1,24 @@
+---
+# roles/display_inventory/meta/main.yml
+
+galaxy_info:
+  role_name: display_inventory
+  author: Your Name
+  description: >
+    Display Ansible inventory using the display_inventory custom module,
+    mirroring ansible-inventory CLI options, controlled entirely by boolean parameters.
+  license: GPL-3.0-or-later
+  min_ansible_version: "2.9"
+  platforms:
+    - name: EL
+      versions: ["7", "8", "9"]
+    - name: Ubuntu
+      versions: ["20.04", "22.04", "24.04"]
+    - name: Debian
+      versions: ["11", "12"]
+  galaxy_tags:
+    - inventory
+    - debug
+    - utilities
+
+dependencies: []

@@ -1,0 +1,27 @@
+---
+# roles/display_inventory/defaults/main.yml
+
+# ── Mode ──────────────────────────────────────────────────────────────────────
+# 'list' or 'graph'. Set to '' to use host lookup instead.
+display_inventory_mode: list
+
+# For host-variable lookup (leave blank to use mode above)
+display_inventory_host: ""
+
+# ── Variable display ──────────────────────────────────────────────────────────
+display_inventory_show_vars: false       # show group/host vars inline
+display_inventory_show_hostvars: false   # populate _meta.hostvars (list mode)
+display_inventory_export: false          # raw vars only, no inheritance
+
+# ── Scope ─────────────────────────────────────────────────────────────────────
+display_inventory_group: ""             # limit to this group name
+display_inventory_pattern: ""           # fnmatch filter on host names (e.g. web*)
+
+# ── Output format ─────────────────────────────────────────────────────────────
+display_inventory_output_format: json   # json | yaml | toml
+
+# ── Export to file ────────────────────────────────────────────────────────────
+# display_inventory_export_file: /tmp/inventory.json
+
+# ── Inventory source override ─────────────────────────────────────────────────
+# display_inventory_source: /path/to/hosts.yml

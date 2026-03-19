@@ -1,0 +1,172 @@
+---
+# display_inventory_demo.yml
+
+- name: Display Inventory Demo
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+
+    # ── mode: list ────────────────────────────────────────────────────────────
+    - name: List full inventory as JSON
+      display_inventory:
+        mode: list
+      register: inv
+      delegate_to: localhost
+      run_once: true
+
+    - name: Print full inventory JSON
+      ansible.builtin.debug:
+        var: inv.output
+
+    - name: List inventory as YAML
+      display_inventory:
+        mode: list
+        output_format: yaml
+      register: inv_yaml
+      delegate_to: localhost
+      run_once: true
+
+    - name: Print full inventory YAML
+      ansible.builtin.debug:
+        var: inv_yaml.output
+
+    - name: List inventory with group vars shown
+      display_inventory:
+        mode: list
+        show_vars: true
+      register: inv_vars
+      delegate_to: localhost
+      run_once: true
+
+    - name: Print inventory with group vars
+      ansible.builtin.debug:
+        var: inv_vars.output
+
+    - name: List inventory with full hostvars populated
+      display_inventory:
+        mode: list
+        show_hostvars: true
+      register: inv_hv
+      delegate_to: localhost
+      run_once: true
+
+    - name: Print inventory with hostvars
+      ansible.builtin.debug:
+        var: inv_hv.output
+
+    - name: List a specific group only
+      display_inventory:
+        mode: list
+        group: ungrouped          # change to a group that exists in your inventory
+      register: inv_group
+      delegate_to: localhost
+      run_once: true
+
+    - name: Print group-scoped inventory
+      ansible.builtin.debug:
+        var: inv_group.output
+
+    - name: List hosts matching a pattern
+      display_inventory:
+        mode: list
+        pattern: "*"              # change to e.g. "web*" to filter
+      register: inv_pattern
+      delegate_to: localhost
+      run_once: true
+
+    - name: Print pattern-filtered inventory
+      ansible.builtin.debug:
+        var: inv_pattern.output
+
+    - name: Save inventory snapshot to a JSON file (timestamped)
+      display_inventory:
+        mode: list
+        show_hostvars: true
+        output_format: json
+        export_file: /tmp/inventory_snapshot
+      register: inv_snap_json
+      delegate_to: localhost
+      run_once: true
+
+    - name: Print JSON snapshot file path
+      ansible.builtin.debug:
+        msg: "Snapshot saved to {{ inv_snap_json.export_file }}"
+
+    - name: Save inventory snapshot to a YAML file (timestamped)
+      display_inventory:
+        mode: list
+        show_hostvars: true
+        output_format: yaml
+        export_file: /tmp/inventory_snapshot
+      register: inv_snap_yaml
+      delegate_to: localhost
+      run_once: true
+
+    - name: Print YAML snapshot file path
+      ansible.builtin.debug:
+        msg: "Snapshot saved to {{ inv_snap_yaml.export_file }}"
+
+    # ── mode: graph ───────────────────────────────────────────────────────────
+    - name: Show inventory graph
+      display_inventory:
+        mode: graph
+      register: inv_graph
+      delegate_to: localhost
+      run_once: true
+
+    - name: Print inventory graph
+      ansible.builtin.debug:
+        var: inv_graph.output
+
+    - name: Show inventory graph with variables
+      display_inventory:
+        mode: graph
+        show_vars: true
+      register: inv_graph_vars
+      delegate_to: localhost
+      run_once: true
+
+    - name: Print inventory graph with vars
+      ansible.builtin.debug:
+        var: inv_graph_vars.output
+
+    - name: Graph a specific group
+      display_inventory:
+        mode: graph
+        group: ungrouped          # change to a group that exists in your inventory
+      register: inv_graph_group
+      delegate_to: localhost
+      run_once: true
+
+    - name: Print group-scoped graph
+      ansible.builtin.debug:
+        var: inv_graph_group.output
+
+    # ── host lookup ───────────────────────────────────────────────────────────
+    - name: Show variables for localhost
+      display_inventory:
+        host: localhost
+      register: inv_host
+      delegate_to: localhost
+      run_once: true
+
+    - name: Print localhost variables
+      ansible.builtin.debug:
+        var: inv_host.output
+
+    # ── export mode ───────────────────────────────────────────────────────────
+    - name: Export raw vars (no inheritance) to a YAML file (timestamped)
+      display_inventory:
+        mode: list
+        show_hostvars: true
+        export: true
+        output_format: yaml
+        export_file: /tmp/inventory_export
+      register: inv_export
+      delegate_to: localhost
+      run_once: true
+
+    - name: Print export file path
+      ansible.builtin.debug:
+        msg: "Export saved to {{ inv_export.export_file }}"

@@ -1,0 +1,23 @@
+---
+# roles/display_inventory/tasks/main.yml
+
+- name: "display_inventory | mode={{ display_inventory_mode | default('host: ' + display_inventory_host) }}"
+  display_inventory:
+    mode: "{{ display_inventory_mode | default(omit) }}"
+    host: "{{ display_inventory_host | default(omit) }}"
+    show_vars: "{{ display_inventory_show_vars }}"
+    show_hostvars: "{{ display_inventory_show_hostvars }}"
+    export: "{{ display_inventory_export }}"
+    export_file: "{{ display_inventory_export_file | default(omit) }}"
+    group: "{{ display_inventory_group | default(omit) }}"
+    pattern: "{{ display_inventory_pattern | default(omit) }}"
+    output_format: "{{ display_inventory_output_format }}"
+    inventory: "{{ display_inventory_source | default(omit) }}"
+  register: _display_inventory_result
+  delegate_to: localhost
+  run_once: true
+
+- name: "display_inventory | Print output"
+  ansible.builtin.debug:
+    var: _display_inventory_result.output
+  when: not (_display_inventory_result.skipped | default(false))
